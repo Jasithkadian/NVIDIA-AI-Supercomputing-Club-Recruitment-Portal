@@ -83,7 +83,7 @@ function FormContainer() {
       }
     } catch (error) {
       console.error("Submission failed", error);
-      alert("Submission failed: " + error.message + "\n\nMake sure the server is running on http://localhost:5000");
+      alert("Submission failed: " + error.message + "\n\nPlease try again later or contact support if the issue persists.");
     } finally {
       setIsSubmitting(false);
     }

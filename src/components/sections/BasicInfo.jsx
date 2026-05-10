@@ -41,12 +41,12 @@ function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
       </div>
       
       <div className="form-group">
-        <label className="form-label">LinkedIn Profile (Optional)</label>
+        <label className="form-label">LinkedIn Profile </label>
         <input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} className="form-input" placeholder="https://linkedin.com/in/username" />
       </div>
       
       <div className="form-group">
-        <label className="form-label">GitHub / Portfolio / Behance (Optional)</label>
+        <label className="form-label">GitHub / Portfolio / Behance (or anything to tell us about yourself) </label>
         <input type="url" name="github" value={formData.github} onChange={handleChange} className="form-input" placeholder="https://github.com/username" />
       </div>
 
