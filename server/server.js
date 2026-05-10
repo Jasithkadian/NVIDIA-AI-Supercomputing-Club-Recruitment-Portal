@@ -72,22 +72,33 @@ const flattenFormData = (data) => {
     domain = '',
     domainAnswers = {},
     motivationJoin = '',
-    motivationCore = '',
-    valueBring = '',
     goals = '',
-    ecosystemContribution = '',
   } = data;
 
+  // Calculate Effort Score (Total characters in long-form answers)
+  const effortScore = (motivationJoin?.length || 0) + 
+                      (goals?.length || 0) + 
+                      Object.values(domainAnswers).join('').length;
+
+  // Format URLs as clickable hyperlinks for Google Sheets
+  const formatLink = (url) => url ? `=HYPERLINK("${url}", "Open Link")` : 'No Link';
+
   return [
+    new Date().toLocaleString(), // Timestamp first for better sorting
     fullName || '',
+    domain || '',
+    effortScore,                // New Column: Effort Score
+    'NEW',                      // New Column: Review Status (Default)
+    '',                         // New Column: Reviewer Notes
     universityEmail || '',
     personalEmail || '',
-    phoneNumber || '',
+    `="${phoneNumber}"`,        // Ensure phone doesn't get scientific notation
     department || '',
     yearSemester || '',
-    linkedin || '',
-    github || '',
-    domain || '',
+    formatLink(linkedin),
+    formatLink(github),
+    motivationJoin || '',
+    goals || '',
     domainAnswers.communities || '',
     domainAnswers.bestWork || '',
     domainAnswers.outreachTask || '',
@@ -96,12 +107,6 @@ const flattenFormData = (data) => {
     domainAnswers.anythingElse || '',
     domainAnswers.techContrib || '',
     domainAnswers.weeklyAvail || '',
-    motivationJoin || '',
-    motivationCore || '',
-    valueBring || '',
-    goals || '',
-    ecosystemContribution || '',
-    new Date().toLocaleString(),
   ];
 };
 
