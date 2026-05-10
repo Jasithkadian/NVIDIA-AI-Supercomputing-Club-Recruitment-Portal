@@ -564,6 +564,14 @@ input[type="checkbox"]:checked + .checkbox-custom {
   left: -9999px !important;
 }
 
+.hidden-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   #root {

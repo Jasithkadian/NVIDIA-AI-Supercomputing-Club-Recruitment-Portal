@@ -1,8 +1,8 @@
 import React from 'react';
 
-const CharCounter = ({ current, min = 50 }) => (
-  <div className={`char-counter ${current >= min ? 'good' : ''}`}>
-    {current} / {min} characters
+const CharCounter = ({ current }) => (
+  <div className="char-counter">
+    {current} characters
   </div>
 );
 
@@ -10,13 +10,13 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
   const { domain, domainAnswers } = formData;
   const requiresBestWork = ['Technical Domain', 'Research & Innovation', 'Media', 'Design'];
   const isComplete = (
-    (domain === 'Outreach' ? (domainAnswers.outreachTask || '').trim().length >= 50 : true) &&
-    (domain === 'Logistics' ? (domainAnswers.eventMgmt || '').trim().length >= 50 : true) &&
-    (requiresBestWork.includes(domain) ? (domainAnswers.bestWork || '').trim().length >= 50 : true) &&
-    (domainAnswers.communities || '').trim().length >= 20 &&
-    (domainAnswers.eventIdea || '').trim().length >= 50 &&
-    (domainAnswers.anythingElse || '').trim().length >= 20 &&
-    (domainAnswers.techContrib || '').trim().length >= 30 &&
+    (domain === 'Outreach' ? (domainAnswers.outreachTask || '').trim().length > 0 : true) &&
+    (domain === 'Logistics' ? (domainAnswers.eventMgmt || '').trim().length > 0 : true) &&
+    (requiresBestWork.includes(domain) ? (domainAnswers.bestWork || '').trim().length > 0 : true) &&
+    (domainAnswers.communities || '').trim().length > 0 &&
+    (domainAnswers.eventIdea || '').trim().length > 0 &&
+    (domainAnswers.anythingElse || '').trim().length > 0 &&
+    (domainAnswers.techContrib || '').trim().length > 0 &&
     (domainAnswers.weeklyAvail || '').trim()
   );
 
@@ -25,17 +25,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">Share your best technical work (link + short description) *</label>
         <textarea className="form-textarea" value={domainAnswers.bestWork || ''} onChange={(e) => handleDomainAnswer('bestWork', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.bestWork?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.bestWork?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">What technical event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe a technical workshop, hackathon, or demo day you'd like to organize..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>
     </>
   );
@@ -45,17 +45,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">Share your best research work (link/document + short summary) *</label>
         <textarea className="form-textarea" value={domainAnswers.bestWork || ''} onChange={(e) => handleDomainAnswer('bestWork', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.bestWork?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.bestWork?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">What research event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe a research symposium, paper discussion, or innovation showcase you'd like to organize..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>
     </>
   );
@@ -65,17 +65,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">Share your best media work (portfolio/reel + short summary) *</label>
         <textarea className="form-textarea" value={domainAnswers.bestWork || ''} onChange={(e) => handleDomainAnswer('bestWork', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.bestWork?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.bestWork?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">What media event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe a content series, documentary, or media campaign you'd like to create..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>
     </>
   );
@@ -85,17 +85,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">Share your best design work (portfolio + short summary) *</label>
         <textarea className="form-textarea" value={domainAnswers.bestWork || ''} onChange={(e) => handleDomainAnswer('bestWork', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.bestWork?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.bestWork?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">What design event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe a design workshop, branding session, or visual asset creation event you'd like to organize..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>
     </>
   );
@@ -104,15 +104,15 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
     <>
       <div className="form-group">        <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">        <label className="form-label">Ask 5 students: “What comes to mind when you hear NVIDIA Supercomputing Club?” Summarize responses and prepare a convincing argument to make them join. *</label>
         <textarea className="form-textarea" value={domainAnswers.outreachTask || ''} onChange={(e) => handleDomainAnswer('outreachTask', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.outreachTask?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.outreachTask?.length || 0} />
       </div>      <div className="form-group">
         <label className="form-label">What outreach event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe a community engagement event, campus awareness campaign, or recruitment drive you'd like to organize..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>    </>
   );
 
@@ -121,17 +121,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">What communities are you currently part of? *</label>
         <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-        <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.communities?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">Previous event management experience *</label>
         <textarea className="form-textarea" value={domainAnswers.eventMgmt || ''} onChange={(e) => handleDomainAnswer('eventMgmt', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.eventMgmt?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventMgmt?.length || 0} />
       </div>
       <div className="form-group">
         <label className="form-label">What logistics/event idea would you propose for the club? (4-5 lines) *</label>
         <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe an event you'd like to organize and manage for the club..." rows="5" required></textarea>
-        <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+        <CharCounter current={domainAnswers.eventIdea?.length || 0} />
       </div>
     </>
   );
@@ -152,17 +152,17 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
           <div className="form-group">
             <label className="form-label">What communities are you currently part of? *</label>
             <textarea className="form-textarea" value={domainAnswers.communities || ''} onChange={(e) => handleDomainAnswer('communities', e.target.value)} placeholder="List any clubs, organizations, or communities you're involved with..." required></textarea>
-            <CharCounter current={domainAnswers.communities?.length || 0} min={20} />
+            <CharCounter current={domainAnswers.communities?.length || 0} />
           </div>
           <div className="form-group">
             <label className="form-label">Share your best work from any domain (link + short summary) *</label>
             <textarea className="form-textarea" value={domainAnswers.bestWork || ''} onChange={(e) => handleDomainAnswer('bestWork', e.target.value)} required></textarea>
-            <CharCounter current={domainAnswers.bestWork?.length || 0} min={50} />
+            <CharCounter current={domainAnswers.bestWork?.length || 0} />
           </div>
           <div className="form-group">
             <label className="form-label">What event idea would you propose for the club? (4-5 lines) *</label>
             <textarea className="form-textarea" value={domainAnswers.eventIdea || ''} onChange={(e) => handleDomainAnswer('eventIdea', e.target.value)} placeholder="Describe any event idea you'd like to organize for the club..." rows="5" required></textarea>
-            <CharCounter current={domainAnswers.eventIdea?.length || 0} min={50} />
+            <CharCounter current={domainAnswers.eventIdea?.length || 0} />
           </div>
         </>
       )}
@@ -170,13 +170,13 @@ function DomainSpecific({ formData, handleDomainAnswer, nextStep, prevStep }) {
       <div className="form-group">
         <label className="form-label">Anything else you want us to know? *</label>
         <textarea className="form-textarea" value={domainAnswers.anythingElse || ''} onChange={(e) => handleDomainAnswer('anythingElse', e.target.value)} placeholder="Share any additional information, achievements, or context that would help us understand you better..." rows="4" required></textarea>
-        <CharCounter current={domainAnswers.anythingElse?.length || 0} min={20} />
+        <CharCounter current={domainAnswers.anythingElse?.length || 0} />
       </div>
 
       <div className="form-group">
         <label className="form-label">How can you contribute technically to the club? *</label>
         <textarea className="form-textarea" value={domainAnswers.techContrib || ''} onChange={(e) => handleDomainAnswer('techContrib', e.target.value)} required></textarea>
-        <CharCounter current={domainAnswers.techContrib?.length || 0} min={30} />
+        <CharCounter current={domainAnswers.techContrib?.length || 0} />
       </div>
 
       <div className="form-group">

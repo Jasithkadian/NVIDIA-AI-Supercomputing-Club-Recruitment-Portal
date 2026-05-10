@@ -22,7 +22,7 @@ function FinalVerification({ formData, handleChange, submitForm, prevStep, isSub
 
       <div className="form-group">
         <label className="checkbox-group">
-          <input type="checkbox" name="agreeActive" checked={formData.agreeActive} onChange={handleChange} />
+          <input type="checkbox" name="agreeActive" checked={formData.agreeActive} onChange={handleChange} className="hidden-checkbox" />
           <div className="checkbox-custom">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={formData.agreeActive ? "#000" : "transparent"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
@@ -30,7 +30,7 @@ function FinalVerification({ formData, handleChange, submitForm, prevStep, isSub
         </label>
         
         <label className="checkbox-group">
-          <input type="checkbox" name="agreeGenuine" checked={formData.agreeGenuine} onChange={handleChange} />
+          <input type="checkbox" name="agreeGenuine" checked={formData.agreeGenuine} onChange={handleChange} className="hidden-checkbox" />
           <div className="checkbox-custom">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={formData.agreeGenuine ? "#000" : "transparent"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
@@ -38,7 +38,7 @@ function FinalVerification({ formData, handleChange, submitForm, prevStep, isSub
         </label>
         
         <label className="checkbox-group">
-          <input type="checkbox" name="agreeProfessional" checked={formData.agreeProfessional} onChange={handleChange} />
+          <input type="checkbox" name="agreeProfessional" checked={formData.agreeProfessional} onChange={handleChange} className="hidden-checkbox" />
           <div className="checkbox-custom">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={formData.agreeProfessional ? "#000" : "transparent"} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
           </div>
