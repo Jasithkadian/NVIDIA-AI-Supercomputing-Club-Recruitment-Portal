@@ -105,11 +105,44 @@ const flattenFormData = (data) => {
   ];
 };
 
+// Simple in-memory rate limiting
+const ipRequestCounts = new Map();
+const RATE_LIMIT_WINDOW = 60 * 60 * 1000; // 1 hour
+const MAX_REQUESTS_PER_WINDOW = 3;
+
+const rateLimiter = (req, res, next) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const now = Date.now();
+  
+  if (!ipRequestCounts.has(ip)) {
+    ipRequestCounts.set(ip, []);
+  }
+  
+  const requests = ipRequestCounts.get(ip).filter(timestamp => now - timestamp < RATE_LIMIT_WINDOW);
+  
+  if (requests.length >= MAX_REQUESTS_PER_WINDOW) {
+    return res.status(429).json({ 
+      success: false, 
+      error: 'Too many submissions from this IP. Please try again after an hour.' 
+    });
+  }
+  
+  requests.push(now);
+  ipRequestCounts.set(ip, requests);
+  next();
+};
+
 // Endpoint to submit form
-app.post('/api/submit-form', async (req, res) => {
+app.post('/api/submit-form', rateLimiter, async (req, res) => {
   try {
     console.log('Form submission received...');
     
+    // Honeypot check
+    if (req.body.website) {
+      console.log('Spam detected via honeypot field');
+      return res.status(400).json({ success: false, error: 'Spam detected.' });
+    }
+
     if (!SPREADSHEET_ID || SPREADSHEET_ID === 'YOUR_SPREADSHEET_ID') {
       throw new Error('SPREADSHEET_ID environment variable is not set. Set it with: $env:SPREADSHEET_ID="your_id"');
     }

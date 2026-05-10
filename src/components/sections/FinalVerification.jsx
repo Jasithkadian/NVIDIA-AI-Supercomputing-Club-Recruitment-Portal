@@ -15,6 +15,11 @@ function FinalVerification({ formData, handleChange, submitForm, prevStep, isSub
         <p style={{ margin: '0.5rem 0', fontSize: '0.9rem' }}><strong>Domain:</strong> {formData.domain}</p>
       </div>
 
+      <div className="form-group hp-field">
+        <label className="form-label">If you're human, leave this blank</label>
+        <input type="text" name="website" value={formData.website} onChange={handleChange} autoComplete="off" />
+      </div>
+
       <div className="form-group">
         <label className="checkbox-group">
           <input type="checkbox" name="agreeActive" checked={formData.agreeActive} onChange={handleChange} />

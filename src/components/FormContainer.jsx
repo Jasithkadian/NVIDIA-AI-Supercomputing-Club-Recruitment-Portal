@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import WelcomeSection from './sections/WelcomeSection';
 import BasicInfo from './sections/BasicInfo';
 import DomainSelection from './sections/DomainSelection';
@@ -7,34 +7,55 @@ import Motivation from './sections/Motivation';
 import FinalVerification from './sections/FinalVerification';
 import SuccessSection from './sections/SuccessSection';
 
+const STORAGE_KEY = 'nvidia_recruitment_form_data';
+
 function FormContainer() {
   const [step, setStep] = useState(1);
-  const [formData, setFormData] = useState({
-    fullName: '',
-    universityEmail: '',
-    personalEmail: '',
-    phoneNumber: '',
-    department: '',
-    yearSemester: '',
-    linkedin: '',
-    github: '',
-    domain: '',
-    domainAnswers: {},
-    motivationJoin: '',
-    motivationCore: '',
-    valueBring: '',
-    goals: '',
-    ecosystemContribution: '',
-    agreeActive: false,
-    agreeGenuine: false,
-    agreeProfessional: false,
+  const [direction, setDirection] = useState('next');
+  const [formData, setFormData] = useState(() => {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Failed to parse saved form data", e);
+      }
+    }
+    return {
+      fullName: '',
+      universityEmail: '',
+      personalEmail: '',
+      phoneNumber: '',
+      department: '',
+      yearSemester: '',
+      linkedin: '',
+      github: '',
+      domain: '',
+      domainAnswers: {},
+      motivationJoin: '',
+      motivationCore: '',
+      valueBring: '',
+      goals: '',
+      ecosystemContribution: '',
+      agreeActive: false,
+      agreeGenuine: false,
+      agreeProfessional: false,
+      website: '', // Honeypot field
+    };
   });
 
+  // Save to local storage whenever formData changes
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+  }, [formData]);
+
   const nextStep = () => {
+    setDirection('next');
     setStep(step + 1);
   };
 
   const prevStep = () => {
+    setDirection('prev');
     setStep(step - 1);
   };
 
@@ -76,6 +97,7 @@ function FormContainer() {
       const result = await response.json();
       
       if (result.success) {
+        localStorage.removeItem(STORAGE_KEY);
         setStep(7); // Success
       } else {
         console.error('Server error:', result.error);
@@ -90,24 +112,32 @@ function FormContainer() {
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 1:
-        return <WelcomeSection nextStep={nextStep} />;
-      case 2:
-        return <BasicInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-      case 3:
-        return <DomainSelection formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-      case 4:
-        return <DomainSpecific formData={formData} handleDomainAnswer={handleDomainAnswer} nextStep={nextStep} prevStep={prevStep} />;
-      case 5:
-        return <Motivation formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-      case 6:
-        return <FinalVerification formData={formData} handleChange={handleChange} submitForm={handleSubmit} prevStep={prevStep} isSubmitting={isSubmitting} />;
-      case 7:
-        return <SuccessSection />;
-      default:
-        return <WelcomeSection nextStep={nextStep} />;
-    }
+    const animationClass = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
+    
+    return (
+      <div className={animationClass} key={step}>
+        {(() => {
+          switch (step) {
+            case 1:
+              return <WelcomeSection nextStep={nextStep} />;
+            case 2:
+              return <BasicInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+            case 3:
+              return <DomainSelection formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+            case 4:
+              return <DomainSpecific formData={formData} handleDomainAnswer={handleDomainAnswer} nextStep={nextStep} prevStep={prevStep} />;
+            case 5:
+              return <Motivation formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+            case 6:
+              return <FinalVerification formData={formData} handleChange={handleChange} submitForm={handleSubmit} prevStep={prevStep} isSubmitting={isSubmitting} />;
+            case 7:
+              return <SuccessSection />;
+            default:
+              return <WelcomeSection nextStep={nextStep} />;
+          }
+        })()}
+      </div>
+    );
   };
 
   const totalSteps = 6;
@@ -124,7 +154,7 @@ function FormContainer() {
           <div className="progress-text">Step {currentProgress} of {totalSteps}</div>
         </div>
       )}
-      <div className="step-enter" key={step}>
+      <div className="step-container">
         {renderStep()}
       </div>
     </div>

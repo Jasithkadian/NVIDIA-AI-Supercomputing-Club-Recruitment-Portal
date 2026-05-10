@@ -492,6 +492,78 @@ input[type="checkbox"]:checked + .checkbox-custom {
   animation: fadeIn 0.4s ease-out forwards;
 }
 
+.input-error {
+  border-color: var(--error) !important;
+  background-color: rgba(255, 74, 74, 0.05) !important;
+}
+
+.error-text {
+  color: var(--error);
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 0.25rem;
+  font-weight: 500;
+}
+
+.char-counter.limit-reached {
+  color: var(--error);
+}
+
+.char-counter.good {
+  color: var(--nvidia-green);
+}
+
+/* Animations */
+.step-container {
+  position: relative;
+  width: 100%;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+}
+
+@keyframes slideInRight {
+  0% {
+    transform: translateX(50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-50px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Honeypot hidden field */
+.hp-field {
+  display: none !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  left: -9999px !important;
+}
+
 /* Responsive */
 @media (max-width: 600px) {
   #root {
