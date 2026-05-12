@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import FormContainer from './components/FormContainer';
 import FloatingParticles from './components/FloatingParticles';
-import CursorSpotlight from './components/CursorSpotlight';
-import CursorTrail from './components/CursorTrail';
 import BootSequence from './components/BootSequence';
 
 function App() {
@@ -11,9 +9,6 @@ function App() {
 
   return (
     <>
-      <CursorTrail />
-      <CursorSpotlight />
-      
       {booting ? (
         <BootSequence onComplete={() => setBooting(false)} />
       ) : (
