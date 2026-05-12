@@ -1,4 +1,74 @@
 import React from 'react';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.18 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 60, opacity: 0, scale: 0.92 },
+  visible: { y: 0, opacity: 1, scale: 1, transition: { type: "spring", stiffness: 80, damping: 12 } }
+};
+
+const MagneticCard = ({ domain, isSelected, isFirstSelected, handleChange, index }) => {
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  
+  const rotateX = useTransform(y, [-100, 100], [15, -15]);
+  const rotateY = useTransform(x, [-100, 100], [-15, 15]);
+
+  function handleMouse(event) {
+    const rect = event.currentTarget.getBoundingClientRect();
+    x.set(event.clientX - rect.left - rect.width / 2);
+    y.set(event.clientY - rect.top - rect.height / 2);
+  }
+
+  function handleMouseLeave() {
+    x.set(0);
+    y.set(0);
+  }
+
+  return (
+    <motion.div variants={itemVariants} style={{ perspective: 1000, ...(isSelected && isFirstSelected ? { gridColumn: '1 / -1' } : {}) }}>
+      <motion.label
+        className={`selection-card domain-card ${isSelected ? 'selected domain-card-selected' : 'domain-card-unselected'}`}
+        style={{
+          rotateX,
+          rotateY,
+          display: 'flex',
+          height: '100%',
+        }}
+        onMouseMove={handleMouse}
+        onMouseLeave={handleMouseLeave}
+        animate={{ y: [0, -12, 0] }}
+        transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut", delay: index * 0.1 }}
+        whileHover={{ 
+          boxShadow: "0 0 30px rgba(118, 185, 0, 0.5)", 
+          background: "linear-gradient(120deg, rgba(118,185,0,0.08) 0%, rgba(118,185,0,0.0) 100%)" 
+        }}
+      >
+        <input 
+          type="radio" 
+          name="domain" 
+          value={domain.id} 
+          checked={isSelected} 
+          onChange={handleChange} 
+        />
+        <div className="selection-icon domain-card-icon">
+          {domain.icon}
+        </div>
+        <div className="selection-title domain-card-title">{domain.id}</div>
+        {isSelected && (
+          <p className="selection-desc domain-card-intro">{domain.intro}</p>
+        )}
+      </motion.label>
+    </motion.div>
+  );
+};
 
 function DomainSelection({ formData, handleChange, nextStep, prevStep }) {
   const isComplete = formData.domain !== '';
@@ -50,40 +120,43 @@ function DomainSelection({ formData, handleChange, nextStep, prevStep }) {
     : domains;
 
   return (
-    <div>
-      <h2>Domain Selection</h2>
-      <p>Which domain are you applying for within the Team?</p>
+    <motion.div variants={containerVariants} initial="hidden" animate="visible">
+      <motion.h2 variants={itemVariants}>Domain Selection</motion.h2>
+      <motion.p variants={itemVariants}>Which domain are you applying for within the Team?</motion.p>
       
-      <div className={`domain-grid ${formData.domain ? 'domain-grid-selected' : ''}`}>
+      <motion.div variants={itemVariants} className={`domain-grid ${formData.domain ? 'domain-grid-selected' : ''}`}>
         {arrangedDomains.map((domain, index) => (
-          <label
+          <MagneticCard 
             key={domain.id}
-            className={`selection-card domain-card ${formData.domain === domain.id ? 'selected domain-card-selected' : 'domain-card-unselected'}`}
-            style={formData.domain && index === 0 ? { gridColumn: '1 / -1' } : {}}
-          >
-            <input 
-              type="radio" 
-              name="domain" 
-              value={domain.id} 
-              checked={formData.domain === domain.id} 
-              onChange={handleChange} 
-            />
-            <div className="selection-icon domain-card-icon">
-              {domain.icon}
-            </div>
-            <div className="selection-title domain-card-title">{domain.id}</div>
-            {formData.domain === domain.id && (
-              <p className="selection-desc domain-card-intro">{domain.intro}</p>
-            )}
-          </label>
+            domain={domain}
+            isSelected={formData.domain === domain.id}
+            isFirstSelected={formData.domain && index === 0}
+            handleChange={handleChange}
+            index={index}
+          />
         ))}
-      </div>
+      </motion.div>
 
-      <div className="button-group">
-        <button className="btn btn-secondary" onClick={prevStep}>Back</button>
-        <button className="btn btn-primary" onClick={nextStep} disabled={!isComplete}>Continue</button>
-      </div>
-    </div>
+      <motion.div variants={itemVariants} className="button-group">
+        <motion.button 
+          className="btn btn-secondary" 
+          onClick={prevStep}
+          whileHover={{ scale: 1.07, y: -6, boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)" }}
+          whileTap={{ scale: 0.94, y: 1 }}
+        >
+          Back
+        </motion.button>
+        <motion.button 
+          className="btn btn-primary" 
+          onClick={nextStep} 
+          disabled={!isComplete}
+          whileHover={isComplete ? { scale: 1.07, y: -6, boxShadow: "0 12px 40px rgba(118, 185, 0, 0.45)" } : {}}
+          whileTap={isComplete ? { scale: 0.94, y: 1 } : {}}
+        >
+          Continue
+        </motion.button>
+      </motion.div>
+    </motion.div>
   );
 }
 

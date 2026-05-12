@@ -42,9 +42,9 @@ body::before {
   width: 100vw;
   height: 100vh;
   background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
+    linear-gradient(to right, rgba(118, 185, 0, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(118, 185, 0, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
   z-index: -2;
 }
 
@@ -71,13 +71,13 @@ body::after {
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Space Grotesk', sans-serif;
-  letter-spacing: -0.02em;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.02em;
 }
 
 h1 {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 800;
   margin-bottom: 0.5rem;
   background: linear-gradient(135deg, #000000 0%, #555555 100%);
   -webkit-background-clip: text;
@@ -86,13 +86,13 @@ h1 {
 
 h2 {
   font-size: 1.8rem;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 1rem;
 }
 
 h3 {
   font-size: 1.25rem;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 0.75rem;
 }
 
@@ -197,7 +197,7 @@ p {
   outline: none;
   border-color: var(--nvidia-green);
   background-color: rgba(0, 0, 0, 0.05);
-  box-shadow: 0 0 0 3px var(--focus-ring);
+  box-shadow: 0 0 0 2px rgba(118, 185, 0, 0.4);
 }
 
 .form-input::placeholder, .form-textarea::placeholder {
@@ -248,10 +248,16 @@ p {
   transform: translateY(-2px);
 }
 
+@keyframes pulseGreen {
+  0% { box-shadow: 0 0 10px rgba(118, 185, 0, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(118, 185, 0, 0.6); }
+  100% { box-shadow: 0 0 10px rgba(118, 185, 0, 0.3); }
+}
+
 .selection-card.selected {
   border-color: var(--nvidia-green);
   background-color: rgba(118, 185, 0, 0.05);
-  box-shadow: 0 4px 15px var(--nvidia-green-glow);
+  animation: pulseGreen 2s infinite ease-in-out;
 }
 
 .selection-icon {
@@ -447,9 +453,22 @@ input[type="checkbox"]:checked + .checkbox-custom {
   margin-bottom: 0.5rem;
 }
 
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
 .progress-fill {
   height: 100%;
   background-color: var(--nvidia-green);
+  background-image: linear-gradient(
+    90deg, 
+    transparent, 
+    rgba(255, 255, 255, 0.4), 
+    transparent
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite linear;
   border-radius: 3px;
   transition: width 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   box-shadow: 0 0 10px var(--nvidia-green-glow);
@@ -526,35 +545,6 @@ input[type="checkbox"]:checked + .checkbox-custom {
   width: 100%;
 }
 
-.slide-in-right {
-  animation: slideInRight 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-.slide-in-left {
-  animation: slideInLeft 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-}
-
-@keyframes slideInRight {
-  0% {
-    transform: translateX(50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-@keyframes slideInLeft {
-  0% {
-    transform: translateX(-50px);
-    opacity: 0;
-  }
-  100% {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
 
 /* Honeypot hidden field */
 .hp-field {

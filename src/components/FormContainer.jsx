@@ -6,6 +6,7 @@ import DomainSpecific from './sections/DomainSpecific';
 import Motivation from './sections/Motivation';
 import FinalVerification from './sections/FinalVerification';
 import SuccessSection from './sections/SuccessSection';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const STORAGE_KEY = 'nvidia_recruitment_form_data';
 
@@ -111,32 +112,59 @@ function FormContainer() {
     }
   };
 
+  const variants = {
+    enter: (direction) => ({
+      y: direction === 'next' ? 80 : -80,
+      opacity: 0,
+      filter: "blur(4px)",
+    }),
+    center: {
+      y: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+    },
+    exit: (direction) => ({
+      y: direction === 'next' ? -80 : 80,
+      opacity: 0,
+      filter: "blur(4px)",
+    }),
+  };
+
   const renderStep = () => {
-    const animationClass = direction === 'next' ? 'slide-in-right' : 'slide-in-left';
-    
     return (
-      <div className={animationClass} key={step}>
-        {(() => {
-          switch (step) {
-            case 1:
-              return <WelcomeSection nextStep={nextStep} />;
-            case 2:
-              return <BasicInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-            case 3:
-              return <DomainSelection formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-            case 4:
-              return <DomainSpecific formData={formData} handleDomainAnswer={handleDomainAnswer} nextStep={nextStep} prevStep={prevStep} />;
-            case 5:
-              return <Motivation formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
-            case 6:
-              return <FinalVerification formData={formData} handleChange={handleChange} submitForm={handleSubmit} prevStep={prevStep} isSubmitting={isSubmitting} />;
-            case 7:
-              return <SuccessSection />;
-            default:
-              return <WelcomeSection nextStep={nextStep} />;
-          }
-        })()}
-      </div>
+      <AnimatePresence mode="wait" custom={direction}>
+        <motion.div
+          key={step}
+          custom={direction}
+          variants={variants}
+          initial="enter"
+          animate="center"
+          exit="exit"
+          transition={{ type: "spring", stiffness: 40, damping: 14 }}
+          style={{ width: '100%' }}
+        >
+          {(() => {
+            switch (step) {
+              case 1:
+                return <WelcomeSection nextStep={nextStep} />;
+              case 2:
+                return <BasicInfo formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+              case 3:
+                return <DomainSelection formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+              case 4:
+                return <DomainSpecific formData={formData} handleDomainAnswer={handleDomainAnswer} nextStep={nextStep} prevStep={prevStep} />;
+              case 5:
+                return <Motivation formData={formData} handleChange={handleChange} nextStep={nextStep} prevStep={prevStep} />;
+              case 6:
+                return <FinalVerification formData={formData} handleChange={handleChange} submitForm={handleSubmit} prevStep={prevStep} isSubmitting={isSubmitting} />;
+              case 7:
+                return <SuccessSection />;
+              default:
+                return <WelcomeSection nextStep={nextStep} />;
+            }
+          })()}
+        </motion.div>
+      </AnimatePresence>
     );
   };
 

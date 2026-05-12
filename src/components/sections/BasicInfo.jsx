@@ -1,4 +1,18 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.18 }
+  }
+};
+
+const itemVariants = {
+  hidden: { y: 60, opacity: 0, scale: 0.92 },
+  visible: { y: 0, opacity: 1, scale: 1, transition: { type: "spring", stiffness: 80, damping: 12 } }
+};
 
 function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
   const [errors, setErrors] = useState({});
@@ -52,16 +66,16 @@ function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
                      Object.keys(errors).length === 0;
 
   return (
-    <div>
-      <h2>Basic Information</h2>
-      <p>Please provide your contact and academic details.</p>
+    <motion.div variants={containerVariants} initial="hidden" animate="visible">
+      <motion.h2 variants={itemVariants}>Basic Information</motion.h2>
+      <motion.p variants={itemVariants}>Please provide your contact and academic details.</motion.p>
       
-      <div className="form-group">
+      <motion.div variants={itemVariants} className="form-group">
         <label className="form-label">Full Name *</label>
         <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} className="form-input" placeholder="Enter your full name" required />
-      </div>
+      </motion.div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <motion.div variants={itemVariants} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">University Email *</label>
           <input 
@@ -89,9 +103,9 @@ function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
           />
           {touched.personalEmail && errors.personalEmail && <span className="error-text">{errors.personalEmail}</span>}
         </div>
-      </div>
+      </motion.div>
       
-      <div className="form-group">
+      <motion.div variants={itemVariants} className="form-group">
         <label className="form-label">Phone Number *</label>
         <input 
           type="tel" 
@@ -104,9 +118,9 @@ function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
           required 
         />
         {touched.phoneNumber && errors.phoneNumber && <span className="error-text">{errors.phoneNumber}</span>}
-      </div>
+      </motion.div>
       
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+      <motion.div variants={itemVariants} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
         <div className="form-group">
           <label className="form-label">Department / Branch *</label>
           <input type="text" name="department" value={formData.department} onChange={handleChange} className="form-input" placeholder="e.g. Computer Science" required />
@@ -115,23 +129,38 @@ function BasicInfo({ formData, handleChange, nextStep, prevStep }) {
           <label className="form-label">Year / Semester *</label>
           <input type="text" name="yearSemester" value={formData.yearSemester} onChange={handleChange} className="form-input" placeholder="e.g. 2nd Year / 4th Sem" required />
         </div>
-      </div>
+      </motion.div>
       
-      <div className="form-group">
+      <motion.div variants={itemVariants} className="form-group">
         <label className="form-label">LinkedIn Profile </label>
         <input type="url" name="linkedin" value={formData.linkedin} onChange={handleChange} className="form-input" placeholder="https://linkedin.com/in/username" />
-      </div>
+      </motion.div>
       
-      <div className="form-group">
+      <motion.div variants={itemVariants} className="form-group">
         <label className="form-label">GitHub / Portfolio / Behance (or anything to tell us about yourself) </label>
         <input type="url" name="github" value={formData.github} onChange={handleChange} className="form-input" placeholder="https://github.com/username" />
-      </div>
+      </motion.div>
 
-      <div className="button-group">
-        <button className="btn btn-secondary" onClick={prevStep}>Back</button>
-        <button className="btn btn-primary" onClick={nextStep} disabled={!isComplete}>Continue</button>
-      </div>
-    </div>
+      <motion.div variants={itemVariants} className="button-group">
+        <motion.button 
+          className="btn btn-secondary" 
+          onClick={prevStep}
+          whileHover={{ scale: 1.07, y: -6, boxShadow: "0 12px 40px rgba(0, 0, 0, 0.15)" }}
+          whileTap={{ scale: 0.94, y: 1 }}
+        >
+          Back
+        </motion.button>
+        <motion.button 
+          className="btn btn-primary" 
+          onClick={nextStep} 
+          disabled={!isComplete}
+          whileHover={isComplete ? { scale: 1.07, y: -6, boxShadow: "0 12px 40px rgba(118, 185, 0, 0.45)" } : {}}
+          whileTap={isComplete ? { scale: 0.94, y: 1 } : {}}
+        >
+          Continue
+        </motion.button>
+      </motion.div>
+    </motion.div>
   );
 }
 
